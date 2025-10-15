@@ -164,6 +164,11 @@
     text-align: left;
     width: 200px;
     transform: translateY(-11px);
+    transition: all 0.5s;
+}
+
+#donation_text:hover, #also_text:hover {
+    transform: scale(1.1) translateY(-11px);
 }
 
 #discord {
