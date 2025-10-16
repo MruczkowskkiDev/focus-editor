@@ -12,42 +12,35 @@
         <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
         <style>
             #login-form, #logged-in {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    height: 100%; /* wpasowuje się w wysokość top bara */
-    margin-left: auto; /* przykleja formularz do prawej */
-}
-
-#login-form input, #login-form button, #logout_button {
-    height: 60%; /* dopasowuje wysokość do top bara */
-    padding: 0 6px; /* zmniejszony padding, żeby tekst nie wystawał */
-    font-size: 0.5em; /* trochę mniejszy font */
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    line-height: normal; /* upewnia się, że tekst jest wyśrodkowany pionowo */
-    transform: translateX(-40px);
-}
-
-
-#login-form button, #logout_button {
-    background-color: #59ebff;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-#login-form button:hover, #logout_button:hover {
-    background-color: #44ddf2;
-}
-
-
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                height: 100%; /* wpasowuje się w wysokość top bara */
+                margin-left: auto; /* przykleja formularz do prawej */
+            }
+            #login-form input, #login-form button, #logout_button {
+                height: 60%; /* dopasowuje wysokość do top bara */
+                padding: 0 6px; /* zmniejszony padding, żeby tekst nie wystawał */
+                font-size: 0.5em; /* trochę mniejszy font */
+                border-radius: 5px;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+                line-height: normal; /* upewnia się, że tekst jest wyśrodkowany pionowo */
+                transform: translateX(-40px);
+            }
+            #login-form button, #logout_button {
+                background-color: #59ebff;
+                border: none;
+                cursor: pointer;
+                transition: all 0.3s;
+            }
+            #login-form button:hover, #logout_button:hover {
+                background-color: #44ddf2;
+            }
             #top_bar {
                 justify-content: space-between; /* aby logo i login były po bokach */
                 padding: 0 20px;
             }
-
             @media (max-width: 600px){
                 #login-form input {
                     width: 70px;
@@ -65,6 +58,7 @@
             }
         </style>
     </head>
+        
     <body>
         <div id="top_bar">
             <p class="text">focus‽ editor</p>
