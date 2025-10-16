@@ -142,7 +142,7 @@
             </div>
         </div>
 
-    <script type="module">
+<script type="module">
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-analytics.js";
@@ -152,9 +152,9 @@
     createUserWithEmailAndPassword, 
     signOut, 
     onAuthStateChanged 
-  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js"; // Import auth-specific functions
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 
-  // Your web app's Firebase configuration
+  // Firebase configuration
   const firebaseConfig = {
     apiKey: "AIzaSyCmCcBFglOUSDuJm25CVHlBuelU2S7fwno",
     authDomain: "focus-editor.firebaseapp.com",
@@ -168,78 +168,73 @@
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
-  const auth = getAuth(app); // Initialize the Authentication service
+  const auth = getAuth(app);
 
-    function loginOrRegister() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+  function loginOrRegister() {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-    // Krok 1: Spróbuj zarejestrować nowego użytkownika
+    // Validate input
+    if (!email || !password) { alert("Please enter email and password!"); return; }
+    if (password.length < 6) { alert("Password must be at least 6 characters!"); return; }
+
+    // Try registering first
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Sukces! Użytkownik został zarejestrowany i automatycznie zalogowany.
-        // userCredential.user zawiera informacje o nowym użytkowniku.
-        alert("Użytkownik zarejestrowany i zalogowany!");
-        console.log("Użytkownik zarejestrowany i zalogowany:", userCredential.user.email);
+        alert("User registered and logged in!");
+        console.log("User registered and logged in:", userCredential.user.email);
       })
       .catch((createError) => {
-        // Błąd podczas próby rejestracji
         if (createError.code === "auth/email-already-in-use") {
-          // Jeśli adres e-mail jest już zajęty, oznacza to, że użytkownik istnieje.
-          // Przechodzimy do kroku 2: próbujemy go zalogować.
+          // If email already exists, try logging in
           signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
-              // Sukces! Użytkownik zalogowany.
-              alert("Użytkownik zalogowany!");
-              console.log("Użytkownik zalogowany:", userCredential.user.email);
+              alert("User logged in!");
+              console.log("User logged in:", userCredential.user.email);
             })
             .catch((signInError) => {
-              // Błąd podczas próby logowania (np. złe hasło)
-              alert("Błąd logowania: " + signInError.message);
-              console.error("Błąd podczas logowania (po próbie rejestracji):", signInError.message);
+              alert("Login error: " + signInError.message);
+              console.error("Login error after registration attempt:", signInError.message);
             });
         } else {
-          // Inny błąd podczas próby rejestracji (np. słabe hasło, niepoprawny format e-maila)
-          alert("Błąd rejestracji: " + createError.message);
-          console.error("Błąd podczas tworzenia użytkownika:", createError.message);
+          alert("Registration error: " + createError.message);
+          console.error("Error creating user:", createError.message);
         }
       });
   }
 
-
   function logout() {
-    signOut(auth) // Use modular signOut
+    signOut(auth)
       .then(() => {
+        alert("User logged out!");
         console.log("User signed out!");
       })
       .catch(error => {
+        alert("Error signing out: " + error.message);
         console.error("Error signing out:", error.message);
       });
   }
 
-  // Listen for authentication state changes
-  onAuthStateChanged(auth, user => { // Use modular onAuthStateChanged
+  onAuthStateChanged(auth, user => {
     if (user) {
-      // User is signed in
       document.getElementById("login-form").style.display = "none";
       document.getElementById("logged-in").style.display = "flex";
       console.log("User is logged in:", user.email);
     } else {
-      // User is signed out
       document.getElementById("login-form").style.display = "flex";
       document.getElementById("logged-in").style.display = "none";
       console.log("No user logged in.");
     }
   });
 
-  // Make sure these functions are globally accessible if called from HTML buttons
-  // For example, if you have <button onclick="loginOrRegister()">Login</button>
+  // Make functions globally accessible for HTML buttons
   window.loginOrRegister = loginOrRegister;
   window.logout = logout;
-
 </script>
+
 
     </body>
     </html>
+
 
 
