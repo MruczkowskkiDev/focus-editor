@@ -15,7 +15,9 @@
     <div id="top_bar">
         <p class="text">focus‽ editor</p>
     </div>
+
     <h1 class="text" id="Title">Hi!</h1>
+
     <div class="container">
         <div id="me_section">
             <div class="me_content">
@@ -29,25 +31,28 @@
             </div>
             <img id="cat_photo" class="img" src="img/icon.jpg" height="300px" alt="cat photo">
         </div>
+
         <h1 id="apps_using" class="text">Apps I use to edit:</h1>
+
         <div class="app">
             <img id="capcut_photo" class="img" src="img/capcut.jpg" alt="Capcut photo">
             <p class="text" id="capcut">CapCut</p>
         </div>
+
         <div class="app">
             <img id="nodevideo_photo" class="img" src="img/nodevideo.jpg" alt="Node video photo">
             <p class="text" id="nodevideo">Node Video</p>
         </div>
+
         <div class="donation_block">
             <div class="donation">
                 <img id="donation_photo" class="img" src="img/icon.jpg" alt="Donation photo">
                 <div class="donation_text_block">
                     <p class="text" id="donation_text">If you wanna help me keep working donate me</p>
-                    <a href="https://buymeacoffee.com/idkuhhhh" target="_blank" id="donation">
-                        Donate
-                    </a>
+                    <a href="https://buymeacoffee.com/idkuhhhh" target="_blank" id="donation">Donate</a>
                 </div>
             </div>
+
             <div class="also">
                 <img id="also_photo" class="img" src="img/alsoyou.jpg" alt="Also you photo">
                 <div class="also_text_block">
@@ -59,15 +64,22 @@
                 </div>
             </div>
         </div>
+
+        <div id="login-form">
+            <input type="email" id="email" placeholder="Email">
+            <input type="password" id="password" placeholder="Hasło">
+            <button onclick="login()">Zaloguj się</button>
+            <button onclick="register()">Zarejestruj się</button>
+            <button onclick="logout()">Wyloguj się</button>
+        </div>
+
         <div id="user-info" style="display: none;">
             <p id="user-name"></p>
             <p id="user-email"></p>
-            <img id="user-photo" width="100" alt="Profile photo">
         </div>
-        <button onclick="login()">Zaloguj się przez Google</button>
-        <button onclick="logout()">Wyloguj się</button>
     </div>
 </body>
+
 <script>
     const firebaseConfig = {
         apiKey: "TWÓJ_API_KEY",
@@ -77,20 +89,32 @@
         messagingSenderId: "TWÓJ_SENDER_ID",
         appId: "TWÓJ_APP_ID"
     };
+
     const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
-    const provider = new firebase.auth.GoogleAuthProvider();
 
     function login() {
-        auth.signInWithPopup(provider)
-        .then(result => {
-            const user = result.user;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        auth.signInWithEmailAndPassword(email, password)
+        .then(userCredential => {
+            const user = userCredential.user;
             document.getElementById("user-info").style.display = "block";
-            document.getElementById("user-name").textContent = "Nazwa: " + user.displayName;
+            document.getElementById("user-name").textContent = "Nazwa: " + (user.displayName || "Brak");
             document.getElementById("user-email").textContent = "Email: " + user.email;
-            document.getElementById("user-photo").src = user.photoURL || "";
         })
-        .catch(error => console.error(error));
+        .catch(error => alert(error.message));
+    }
+
+    function register() {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        auth.createUserWithEmailAndPassword(email, password)
+        .then(userCredential => {
+            const user = userCredential.user;
+            alert("Zarejestrowano użytkownika: " + user.email);
+        })
+        .catch(error => alert(error.message));
     }
 
     function logout() {
@@ -102,9 +126,8 @@
     auth.onAuthStateChanged(user => {
         if(user){
             document.getElementById("user-info").style.display = "block";
-            document.getElementById("user-name").textContent = "Nazwa: " + user.displayName;
+            document.getElementById("user-name").textContent = "Nazwa: " + (user.displayName || "Brak");
             document.getElementById("user-email").textContent = "Email: " + user.email;
-            document.getElementById("user-photo").src = user.photoURL || "";
         } else {
             document.getElementById("user-info").style.display = "none";
         }
