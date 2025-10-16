@@ -193,16 +193,21 @@ function logout() {
 onAuthStateChanged(auth, user => {
   const loginForm = document.getElementById("login-form");
   const loggedInDiv = document.getElementById("logged-in");
+  const topBar = document.getElementById("top_bar"); // dodaj to
 
   if (user) {
     loginForm.style.display = "none";
     loggedInDiv.style.display = "flex";
+    topBar.style.display = "flex"; // <-- pokaż top bar
     console.log("User is logged in:", user.email);
   } else {
     loginForm.style.display = "flex";
     loggedInDiv.style.display = "none";
+    topBar.style.display = "none"; // <-- ukryj top bar
     console.log("No user logged in.");
   }
+});
+
 });
 
 // Make functions globally accessible for HTML buttons
