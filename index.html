@@ -36,8 +36,7 @@
         <div id="login-buttons">
             <input type="email" id="email" placeholder="Email">
             <input type="password" id="password" placeholder="Hasło">
-            <button onclick="login()">Zaloguj się</button>
-            <button onclick="register()">Zarejestruj się</button>
+            <button onclick="loginOrRegister()">Login</button>
         </div>
         <div id="logged-in" style="display:none;">
             <span>Zalogowano</span>
@@ -88,20 +87,21 @@
     const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    function login() {
+    function loginOrRegister() {
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
+
         auth.signInWithEmailAndPassword(email, password)
         .then(() => {})
-        .catch(error => alert(error.message));
-    }
-
-    function register() {
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-        auth.createUserWithEmailAndPassword(email, password)
-        .then(() => alert("Zarejestrowano użytkownika"))
-        .catch(error => alert(error.message));
+        .catch(error => {
+            if(error.code === "auth/user-not-found") {
+                auth.createUserWithEmailAndPassword(email, password)
+                .then(() => alert("Użytkownik został zarejestrowany i zalogowany"))
+                .catch(err => alert(err.message));
+            } else {
+                alert(error.message);
+            }
+        });
     }
 
     function logout() {
@@ -118,4 +118,5 @@
         }
     });
 </script>
+</body>
 </html>
