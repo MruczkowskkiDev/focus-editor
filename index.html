@@ -28,6 +28,7 @@
                 line-height: normal; /* upewnia się, że tekst jest wyśrodkowany pionowo */
                 transform: translateX(-40px);
             }
+            
             #login-form button, #logout_button {
                 background-color: #59ebff;
                 border: none;
@@ -56,6 +57,20 @@
                     font-size: 1.6em;
                 }
             }
+            
+            #content_link {
+                font-size: 0.5em;
+                text-decoration: none;
+                transform: translateX(-50px);
+                background-color: #59ebff;
+                border: solid  5px #59ebff; 
+                border-radius: 5px;
+            }
+            
+            #content_link:hover {
+                transform: scale(1.1) translateX(-50px);
+                background-color: #44ddf2;
+            }
         </style>
     </head>
         
@@ -70,7 +85,7 @@
             </div>
 
             <div id="logged-in" style="display:none;">
-                <a href="Content_web/content.html" target="_blank" class="text" id="content_open">Content</a>
+                <a href="Content_web/content.html" target="_blank" class="text" id="content_link">Content</a>
                 <button id="logout_button" onclick="logout()">Logout</button>
             </div>
         </div>
