@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <title>focus‽</title>
-        <meta name="author" content="focus‽" />
+        <meta name="author" content="Mruczkowskki" />
         <meta name="description" content="Hey! I am an editor, that's my website." />
         <meta name="keywords" content="editor" />
         <link rel="stylesheet" href="styles.css" />
@@ -170,33 +170,42 @@
   const analytics = getAnalytics(app);
   const auth = getAuth(app); // Initialize the Authentication service
 
-  function loginOrRegister() {
+    function loginOrRegister() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
-    signInWithEmailAndPassword(auth, email, password) // Use modular signInWithEmailAndPassword
-      .then(() => {
-        // User successfully signed in
-        console.log("User signed in!");
+    // Krok 1: Spróbuj zarejestrować nowego użytkownika
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Sukces! Użytkownik został zarejestrowany i automatycznie zalogowany.
+        // userCredential.user zawiera informacje o nowym użytkowniku.
+        alert("Użytkownik zarejestrowany i zalogowany!");
+        console.log("Użytkownik zarejestrowany i zalogowany:", userCredential.user.email);
       })
-      .catch(error => {
-        if (error.code === "auth/user-not-found") {
-          // If user not found, try to create a new one
-          createUserWithEmailAndPassword(auth, email, password) // Use modular createUserWithEmailAndPassword
-            .then(() => {
-              alert("User registered and logged in!");
-              console.log("User registered and logged in!");
+      .catch((createError) => {
+        // Błąd podczas próby rejestracji
+        if (createError.code === "auth/email-already-in-use") {
+          // Jeśli adres e-mail jest już zajęty, oznacza to, że użytkownik istnieje.
+          // Przechodzimy do kroku 2: próbujemy go zalogować.
+          signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+              // Sukces! Użytkownik zalogowany.
+              alert("Użytkownik zalogowany!");
+              console.log("Użytkownik zalogowany:", userCredential.user.email);
             })
-            .catch(err => {
-              alert(err.message);
-              console.error("Error creating user:", err.message);
+            .catch((signInError) => {
+              // Błąd podczas próby logowania (np. złe hasło)
+              alert("Błąd logowania: " + signInError.message);
+              console.error("Błąd podczas logowania (po próbie rejestracji):", signInError.message);
             });
         } else {
-          alert(error.message);
-          console.error("Error signing in:", error.message);
+          // Inny błąd podczas próby rejestracji (np. słabe hasło, niepoprawny format e-maila)
+          alert("Błąd rejestracji: " + createError.message);
+          console.error("Błąd podczas tworzenia użytkownika:", createError.message);
         }
       });
   }
+
 
   function logout() {
     signOut(auth) // Use modular signOut
@@ -232,4 +241,5 @@
 
     </body>
     </html>
+
 
