@@ -1,74 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>focus‽</title>
-        <meta name="author" content="focus‽" />
-        <meta name="description" content="Hey! I am a editor, thats my website." />
-        <meta name="keywords" content="editor" />
-        <link rel="stylesheet" href="styles.css" />
-        <link rel="icon" href="img/icon.jpg" />
-    </head>
-    <body>
-        <div id="top_bar">
-            <p class="text">focus‽ editor</p>
-        </div>
-            
-        <h1 class="text" id="Title">Hi!</h1>
-           
-        <div class="container">
-            <div id="me_section">
-  <div class="me_content">
-    <img id="me" src="img/me.png" class="img" alt="a me photo">
-    <div id="text_block">
-      <h1 id="me_t" class="text">This is me!</h1>
-      <h2 id="me_text" class="text">
-        I am a editor and I love editing and eating 😋 . My most favorite collab was with Kingaaas or with D1hster.
-      </h2>
+<head>
+    <meta charset="UTF-8" />
+    <title>focus‽</title>
+    <meta name="author" content="focus‽" />
+    <meta name="description" content="Hey! I am a editor, thats my website." />
+    <meta name="keywords" content="editor" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="img/icon.jpg" />
+    <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+</head>
+<body>
+    <div id="top_bar">
+        <p class="text">focus‽ editor</p>
     </div>
-  </div>
-
-  <img id="cat_photo" class="img" src="img/icon.jpg" height="300px" alt="cat photo">
-</div>
-
-                
-            <h1 id="apps_using" class="text">Apps I use to edit:</h1>
-                
-            <div class="app">
-                <img id="capcut_photo" class="img" src="img/capcut.jpg" alt="Capcut photo">
-                <p class="text" id="capcut">CapCut</p>
-            </div>
-                
-            <div class="app">
-                <img id="nodevideo_photo" class="img" src="img/nodevideo.jpg" alt="Node video photo">
-                <p class="text" id="nodevideo">Node Video</p>
-            </div>
-            
-            <div class="donation_block">
-                <div class="donation">
-                    <img id="donation_photo" class="img" src="img/icon.jpg" alt="Donation photo">
-                    
-                    <div class="donation_text_block" >
-                        <p class="text" id="donation_text">If you wanna help me keep working donate me</p>
-                        <a href="https://buymeacoffee.com/idkuhhhh" target="_blank" id="donation">
-                            Donate
-                        </a>    
-                    </div>
+    <h1 class="text" id="Title">Hi!</h1>
+    <div class="container">
+        <div id="me_section">
+            <div class="me_content">
+                <img id="me" src="img/me.png" class="img" alt="a me photo">
+                <div id="text_block">
+                    <h1 id="me_t" class="text">This is me!</h1>
+                    <h2 id="me_text" class="text">
+                        I am a editor and I love editing and eating 😋 . My most favorite collab was with Kingaaas or with D1hster.
+                    </h2>
                 </div>
-                    
-                <div class="also">
-                    <img id="also_photo" class="img" src="img/alsoyou.jpg" alt="Also you photo">
-                    
-                    <div class="also_text_block">
-                        <p class="text" id="also_text">Also YOU should join my discord server</p>
-                        
-                        <a href="https://discord.gg/UJK5yrkE3" target="_blank" id="discord">
-                            discord
-                            <img class="img" id="discord_photo" src="img/discord_icon.png">
-                        </a>
-                    </div>  
+            </div>
+            <img id="cat_photo" class="img" src="img/icon.jpg" height="300px" alt="cat photo">
+        </div>
+        <h1 id="apps_using" class="text">Apps I use to edit:</h1>
+        <div class="app">
+            <img id="capcut_photo" class="img" src="img/capcut.jpg" alt="Capcut photo">
+            <p class="text" id="capcut">CapCut</p>
+        </div>
+        <div class="app">
+            <img id="nodevideo_photo" class="img" src="img/nodevideo.jpg" alt="Node video photo">
+            <p class="text" id="nodevideo">Node Video</p>
+        </div>
+        <div class="donation_block">
+            <div class="donation">
+                <img id="donation_photo" class="img" src="img/icon.jpg" alt="Donation photo">
+                <div class="donation_text_block">
+                    <p class="text" id="donation_text">If you wanna help me keep working donate me</p>
+                    <a href="https://buymeacoffee.com/idkuhhhh" target="_blank" id="donation">
+                        Donate
+                    </a>
+                </div>
+            </div>
+            <div class="also">
+                <img id="also_photo" class="img" src="img/alsoyou.jpg" alt="Also you photo">
+                <div class="also_text_block">
+                    <p class="text" id="also_text">Also YOU should join my discord server</p>
+                    <a href="https://discord.gg/UJK5yrkE3" target="_blank" id="discord">
+                        discord
+                        <img class="img" id="discord_photo" src="img/discord_icon.png">
+                    </a>
                 </div>
             </div>
         </div>
-    </body>
+        <div id="user-info" style="display: none;">
+            <p id="user-name"></p>
+            <p id="user-email"></p>
+            <img id="user-photo" width="100" alt="Profile photo">
+        </div>
+        <button onclick="login()">Zaloguj się przez Google</button>
+        <button onclick="logout()">Wyloguj się</button>
+    </div>
+</body>
+<script>
+    const firebaseConfig = {
+        apiKey: "TWÓJ_API_KEY",
+        authDomain: "TWÓJ_PROJECT_ID.firebaseapp.com",
+        projectId: "TWÓJ_PROJECT_ID",
+        storageBucket: "TWÓJ_PROJECT_ID.appspot.com",
+        messagingSenderId: "TWÓJ_SENDER_ID",
+        appId: "TWÓJ_APP_ID"
+    };
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    function login() {
+        auth.signInWithPopup(provider)
+        .then(result => {
+            const user = result.user;
+            document.getElementById("user-info").style.display = "block";
+            document.getElementById("user-name").textContent = "Nazwa: " + user.displayName;
+            document.getElementById("user-email").textContent = "Email: " + user.email;
+            document.getElementById("user-photo").src = user.photoURL || "";
+        })
+        .catch(error => console.error(error));
+    }
+
+    function logout() {
+        auth.signOut().then(() => {
+            document.getElementById("user-info").style.display = "none";
+        });
+    }
+
+    auth.onAuthStateChanged(user => {
+        if(user){
+            document.getElementById("user-info").style.display = "block";
+            document.getElementById("user-name").textContent = "Nazwa: " + user.displayName;
+            document.getElementById("user-email").textContent = "Email: " + user.email;
+            document.getElementById("user-photo").src = user.photoURL || "";
+        } else {
+            document.getElementById("user-info").style.display = "none";
+        }
+    });
+</script>
 </html>
