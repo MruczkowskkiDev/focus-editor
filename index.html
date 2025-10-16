@@ -1,122 +1,184 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <title>focus‽</title>
-    <link rel="stylesheet" href="styles.css" />
-    <link rel="icon" href="img/icon.jpg" />
-    <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
-    <style>
-        #top_bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: #222;
-            color: white;
-            padding: 10px 20px;
-        }
-        #top_bar button {
-            margin-left: 10px;
-            padding: 5px 10px;
-            cursor: pointer;
-        }
-        #login-form {
-            display: flex;
-            gap: 5px;
-        }
-        #login-form input {
-            padding: 5px;
-        }
-    </style>
-</head>
-<body>
-    <div id="top_bar">
-        <p class="text">focus‽ editor</p>
-        <div id="login-buttons">
-            <input type="email" id="email" placeholder="Email">
-            <input type="password" id="password" placeholder="Password">
-            <button onclick="loginOrRegister()">Login</button>
-        </div>
-        <div id="logged-in" style="display:none;">
-            <span>Logged in</span>
-            <button onclick="logout()">Logout</button>
-        </div>
-    </div>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>focus‽</title>
+        <meta name="author" content="focus‽" />
+        <meta name="description" content="Hey! I am an editor, that's my website." />
+        <meta name="keywords" content="editor" />
+        <link rel="stylesheet" href="styles.css" />
+        <link rel="icon" href="img/icon.jpg" />
+        <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+        <style>
+            #login-form, #logged-in {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    height: 100%; /* wpasowuje się w wysokość top bara */
+    margin-left: auto; /* przykleja formularz do prawej */
+}
 
-    <h1 class="text" id="Title">Hi!</h1>
+#login-form input, #login-form button, #logout_button {
+    height: 60%; /* dopasowuje wysokość do top bara */
+    padding: 0 6px; /* zmniejszony padding, żeby tekst nie wystawał */
+    font-size: 0.5em; /* trochę mniejszy font */
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    line-height: normal; /* upewnia się, że tekst jest wyśrodkowany pionowo */
+    transform: translateX(-40px);
+}
 
-    <div class="container">
-        <div id="me_section">
-            <div class="me_content">
-                <img id="me" src="img/me.png" class="img" alt="a me photo">
-                <div id="text_block">
-                    <h1 id="me_t" class="text">This is me!</h1>
-                    <h2 id="me_text" class="text">
-                        I am an editor and I love editing and eating 😋. My favorite collabs were with Kingaaas and D1hster.
-                    </h2>
+
+#login-form button, #logout_button {
+    background-color: #59ebff;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#login-form button:hover, #logout_button:hover {
+    background-color: #44ddf2;
+}
+
+
+            #top_bar {
+                justify-content: space-between; /* aby logo i login były po bokach */
+                padding: 0 20px;
+            }
+
+            @media (max-width: 600px){
+                #login-form input {
+                    width: 70px;
+                    font-size: 0.8em;
+                }
+
+                #login-form button, #logout_button {
+                    font-size: 0.8em;
+                    padding: 3px 7px;
+                }
+
+                #top_bar {
+                    font-size: 1.6em;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="top_bar">
+            <p class="text">focus‽ editor</p>
+
+            <div id="login-form">
+                <input type="email" id="email" placeholder="Email">
+                <input type="password" id="password" placeholder="Password">
+                <button onclick="loginOrRegister()">Login</button>
+            </div>
+
+            <div id="logged-in" style="display:none;">
+                <span class="text">Logged in</span>
+                <button id="logout_button" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <h1 class="text" id="Title">Hi!</h1>
+
+        <div class="container">
+            <!-- tu cały Twój stary HTML (me_section, apps, donation_block, etc) -->
+            <div id="me_section">
+                <div class="me_content">
+                    <img id="me" src="img/me.png" class="img" alt="a me photo">
+                    <div id="text_block">
+                        <h1 id="me_t" class="text">This is me!</h1>
+                        <h2 id="me_text" class="text">
+                            I am an editor and I love editing and eating 😋. My most favorite collabs were with Kingaaas or D1hster.
+                        </h2>
+                    </div>
+                </div>
+
+                <img id="cat_photo" class="img" src="img/icon.jpg" height="300px" alt="cat photo">
+            </div>
+
+            <h1 id="apps_using" class="text">Apps I use to edit:</h1>
+
+            <div class="app">
+                <img id="capcut_photo" class="img" src="img/capcut.jpg" alt="Capcut photo">
+                <p class="text" id="capcut">CapCut</p>
+            </div>
+
+            <div class="app">
+                <img id="nodevideo_photo" class="img" src="img/nodevideo.jpg" alt="Node video photo">
+                <p class="text" id="nodevideo">Node Video</p>
+            </div>
+
+            <div class="donation_block">
+                <div class="donation">
+                    <img id="donation_photo" class="img" src="img/icon.jpg" alt="Donation photo">
+                    <div class="donation_text_block" >
+                        <p class="text" id="donation_text">If you wanna help me keep working donate me</p>
+                        <a href="https://buymeacoffee.com/idkuhhhh" target="_blank" id="donation">
+                            Donate
+                        </a>    
+                    </div>
+                </div>
+
+                <div class="also">
+                    <img id="also_photo" class="img" src="img/alsoyou.jpg" alt="Also you photo">
+                    <div class="also_text_block">
+                        <p class="text" id="also_text">Also YOU should join my discord server</p>
+                        <a href="https://discord.gg/UJK5yrkE3" target="_blank" id="discord">
+                            discord
+                            <img class="img" id="discord_photo" src="img/discord_icon.png">
+                        </a>
+                    </div>  
                 </div>
             </div>
-            <img id="cat_photo" class="img" src="img/icon.jpg" height="300px" alt="cat photo">
         </div>
 
-        <h1 id="apps_using" class="text">Apps I use to edit:</h1>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCmCcBFglOUSDuJm25CVHlBuelU2S7fwno",
+            authDomain: "focus-editor.firebaseapp.com",
+            projectId: "focus-editor",
+            storageBucket: "focus-editor.firebasestorage.app",
+            messagingSenderId: "795548881675",
+            appId: "1:795548881675:web:0b95749a361e4a3f8b080e",
+            measurementId: "G-9GSX65PX21"
+        };
 
-        <div class="app">
-            <img id="capcut_photo" class="img" src="img/capcut.jpg" alt="Capcut photo">
-            <p class="text" id="capcut">CapCut</p>
-        </div>
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
 
-        <div class="app">
-            <img id="nodevideo_photo" class="img" src="img/nodevideo.jpg" alt="Node video photo">
-            <p class="text" id="nodevideo">Node Video</p>
-        </div>
-    </div>
+        function loginOrRegister() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
 
-<script>
-    const firebaseConfig = {
-        apiKey: "AIzaSyCmCcBFglOUSDuJm25CVHlBuelU2S7fwno",
-        authDomain: "focus-editor.firebaseapp.com",
-        projectId: "focus-editor",
-        storageBucket: "focus-editor.firebasestorage.app",
-        messagingSenderId: "795548881675",
-        appId: "1:795548881675:web:0b95749a361e4a3f8b080e",
-        measurementId: "G-9GSX65PX21"
-    };
+            auth.signInWithEmailAndPassword(email, password)
+            .then(() => {})
+            .catch(error => {
+                if(error.code === "auth/user-not-found") {
+                    auth.createUserWithEmailAndPassword(email, password)
+                    .then(() => alert("User registered and logged in"))
+                    .catch(err => alert(err.message));
+                } else {
+                    alert(error.message);
+                }
+            });a
+        }
 
-    const app = firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
+        function logout() {
+            auth.signOut();
+        }
 
-    function loginOrRegister() {
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-
-        auth.signInWithEmailAndPassword(email, password)
-        .then(() => {})
-        .catch(error => {
-            if(error.code === "auth/user-not-found") {
-                auth.createUserWithEmailAndPassword(email, password)
-                .then(() => alert("User registered and logged in"))
-                .catch(err => alert(err.message));
+        auth.onAuthStateChanged(user => {
+            if(user){
+                document.getElementById("login-form").style.display = "none";
+                document.getElementById("logged-in").style.display = "flex";
             } else {
-                alert(error.message);
+                document.getElementById("login-form").style.display = "flex";
+                document.getElementById("logged-in").style.display = "none";
             }
         });
-    }
-
-    function logout() {
-        auth.signOut();
-    }
-
-    auth.onAuthStateChanged(user => {
-        if(user){
-            document.getElementById("login-buttons").style.display = "none";
-            document.getElementById("logged-in").style.display = "flex";
-        } else {
-            document.getElementById("login-buttons").style.display = "flex";
-            document.getElementById("logged-in").style.display = "none";
-        }
-    });
-</script>
-</body>
-</html>
+    </script>
+    </body>
+    </html>
