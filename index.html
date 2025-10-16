@@ -159,26 +159,21 @@ const firebaseConfig = {
     measurementId: "G-9GSX65PX21"
 };
 
+// Inicjalizacja
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Logowanie lub rejestracja
+// Funkcje logowania i wylogowania
 function loginOrRegister() {
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
 
-    if (!email || !password) {
-        alert("Enter email and password!");
-        return;
-    }
-    if (password.length < 6) {
-        alert("Password must be at least 6 characters!");
-        return;
-    }
+    if (!email || !password) { alert("Enter email and password!"); return; }
+    if (password.length < 6) { alert("Password must be at least 6 characters!"); return; }
 
     signInWithEmailAndPassword(auth, email, password)
     .catch(error => {
-        if(error.code === "auth/user-not-found") {
+        if (error.code === "auth/user-not-found") {
             createUserWithEmailAndPassword(auth, email, password)
             .then(() => alert("User registered and logged in"))
             .catch(err => alert(err.message));
@@ -188,30 +183,34 @@ function loginOrRegister() {
     });
 }
 
-// Wylogowanie
 function logout() {
     signOut(auth);
 }
 
 // Obsługa stanu zalogowania
 onAuthStateChanged(auth, user => {
+    const loginForm = document.getElementById("login-form");
+    const loggedIn = document.getElementById("logged-in");
+
     if(user){
-        document.getElementById("login-form").style.display = "none";
-        document.getElementById("logged-in").style.display = "flex";
+        loginForm.style.display = "none";
+        loggedIn.style.display = "flex";
     } else {
-        document.getElementById("login-form").style.display = "flex";
-        document.getElementById("logged-in").style.display = "none";
+        loginForm.style.display = "flex";
+        loggedIn.style.display = "none";
     }
 });
 
-// Udostępniamy funkcje globalnie, żeby onclick w HTML działał
+// Globalnie dostępne funkcje dla onclick
 window.loginOrRegister = loginOrRegister;
 window.logout = logout;
 </script>
 
 
+
     </body>
     </html>
+
 
 
 
