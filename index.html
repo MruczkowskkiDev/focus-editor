@@ -1,216 +1,156 @@
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>focus‽</title>
-        <meta name="author" content="focus‽" />
-        <meta name="description" content="Hey! I am an editor, that's my website." />
-        <meta name="keywords" content="editor" />
-        <link rel="stylesheet" href="styles.css" />
-        <link rel="icon" href="img/icon.jpg" />
-        <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
-        <style>
-            #login-form, #logged-in {
-                display: flex;
-                align-items: center;
-                gap: 5px;
-                height: 100%; /* wpasowuje się w wysokość top bara */
-                margin-left: auto; /* przykleja formularz do prawej */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>focus‽</title>
+    <meta name="author" content="focus‽" />
+    <meta name="description" content="Hey! I am an editor, that's my website." />
+    <meta name="keywords" content="editor" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="img/icon.jpg" />
+    <style>
+        #login-form, #logged-in {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            height: 100%;
+            margin-left: auto;
+        }
+        #login-form input, #login-form button, #logout_button {
+            height: 60%;
+            padding: 0 6px;
+            font-size: 0.5em;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            line-height: normal;
+            transform: translateX(-40px);
+        }
+        #login-form button, #logout_button {
+            background-color: #59ebff;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        #login-form button:hover, #logout_button:hover {
+            background-color: #44ddf2;
+        }
+        #top_bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background-color: #7cd1ff;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            font-size: 1.8em;
+            z-index: 1000;
+        }
+        #content_link {
+            font-size: 0.5em;
+            text-decoration: none;
+            transform: translateX(-50px);
+            background-color: #59ebff;
+            border: solid 5px #59ebff; 
+            border-radius: 5px;
+        }
+        #content_link:hover {
+            transform: scale(1.1) translateX(-50px);
+            background-color: #44ddf2;
+        }
+        @media (max-width: 600px){
+            #login-form input {
+                width: 70px;
+                font-size: 0.8em;
             }
-            #login-form input, #login-form button, #logout_button {
-                height: 60%; /* dopasowuje wysokość do top bara */
-                padding: 0 6px; /* zmniejszony padding, żeby tekst nie wystawał */
-                font-size: 0.5em; /* trochę mniejszy font */
-                border-radius: 5px;
-                border: 1px solid #ccc;
-                box-sizing: border-box;
-                line-height: normal; /* upewnia się, że tekst jest wyśrodkowany pionowo */
-                transform: translateX(-40px);
-            }
-            
             #login-form button, #logout_button {
-                background-color: #59ebff;
-                border: none;
-                cursor: pointer;
-                transition: all 0.3s;
-            }
-            #login-form button:hover, #logout_button:hover {
-                background-color: #44ddf2;
+                font-size: 0.8em;
+                padding: 3px 7px;
             }
             #top_bar {
-                justify-content: space-between; /* aby logo i login były po bokach */
-                padding: 0 20px;
+                font-size: 1.6em;
             }
-            @media (max-width: 600px){
-                #login-form input {
-                    width: 70px;
-                    font-size: 0.8em;
-                }
-
-                #login-form button, #logout_button {
-                    font-size: 0.8em;
-                    padding: 3px 7px;
-                }
-
-                #top_bar {
-                    font-size: 1.6em;
-                }
-            }
-            
-            #content_link {
-                font-size: 0.5em;
-                text-decoration: none;
-                transform: translateX(-50px);
-                background-color: #59ebff;
-                border: solid  5px #59ebff; 
-                border-radius: 5px;
-            }
-            
-            #content_link:hover {
-                transform: scale(1.1) translateX(-50px);
-                background-color: #44ddf2;
-            }
-        </style>
-    </head>
-        
-    <body>
-        <div id="top_bar">
-            <p class="text">focus‽ editor</p>
-
-            <div id="login-form">
-                <input type="email" id="email" placeholder="Email">
-                <input type="password" id="password" placeholder="Password">
-                <button onclick="loginOrRegister()">Login</button>
-            </div>
-
-            <div id="logged-in" style="display:none;">
-                <a href="Content_web/content.html" target="_blank" class="text" id="content_link">Content</a>
-                <button id="logout_button" onclick="logout()">Logout</button>
-            </div>
-        </div>
-
-        <h1 class="text" id="Title">Hi!</h1>
-
-        <div class="container">
-            <!-- tu cały Twój stary HTML (me_section, apps, donation_block, etc) -->
-            <div id="me_section">
-                <div class="me_content">
-                    <img id="me" src="img/me.png" class="img" alt="a me photo">
-                    <div id="text_block">
-                        <h1 id="me_t" class="text">This is me!</h1>
-                        <h2 id="me_text" class="text">
-                            I am an editor and I love editing and eating 😋. My most favorite collabs were with Kingaaas or D1hster.
-                        </h2>
-                    </div>
-                </div>
-
-                <img id="cat_photo" class="img" src="img/icon.jpg" height="300px" alt="cat photo">
-            </div>
-
-            <h1 id="apps_using" class="text">Apps I use to edit:</h1>
-
-            <div class="app">
-                <img id="capcut_photo" class="img" src="img/capcut.jpg" alt="Capcut photo">
-                <p class="text" id="capcut">CapCut</p>
-            </div>
-
-            <div class="app">
-                <img id="nodevideo_photo" class="img" src="img/nodevideo.jpg" alt="Node video photo">
-                <p class="text" id="nodevideo">Node Video</p>
-            </div>
-
-            <div class="donation_block">
-                <div class="donation">
-                    <img id="donation_photo" class="img" src="img/icon.jpg" alt="Donation photo">
-                    <div class="donation_text_block" >
-                        <p class="text" id="donation_text">If you wanna help me keep working donate me</p>
-                        <a href="https://buymeacoffee.com/idkuhhhh" target="_blank" id="donation">
-                            Donate
-                        </a>    
-                    </div>
-                </div>
-
-                <div class="also">
-                    <img id="also_photo" class="img" src="img/alsoyou.jpg" alt="Also you photo">
-                    <div class="also_text_block">
-                        <p class="text" id="also_text">Also YOU should join my discord server</p>
-                        <a href="https://discord.gg/UJK5yrkE3" target="_blank" id="discord">
-                            discord
-                            <img class="img" id="discord_photo" src="img/discord_icon.png">
-                        </a>
-                    </div>  
-                </div>
-            </div>
-        </div>
-
-   <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
-
-// Konfiguracja Firebase
-const firebaseConfig = {
-    apiKey: "AIzaSyCmCcBFglOUSDuJm25CVHlBuelU2S7fwno",
-    authDomain: "focus-editor.firebaseapp.com",
-    projectId: "focus-editor",
-    storageBucket: "focus-editor.firebasestorage.app",
-    messagingSenderId: "795548881675",
-    appId: "1:795548881675:web:0b95749a361e4a3f8b080e",
-    measurementId: "G-9GSX65PX21"
-};
-
-// Inicjalizacja
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-// Funkcje logowania i wylogowania
-function loginOrRegister() {
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
-
-    if (!email || !password) { alert("Enter email and password!"); return; }
-    if (password.length < 6) { alert("Password must be at least 6 characters!"); return; }
-
-    signInWithEmailAndPassword(auth, email, password)
-    .catch(error => {
-        if (error.code === "auth/user-not-found") {
-            createUserWithEmailAndPassword(auth, email, password)
-            .then(() => alert("User registered and logged in"))
-            .catch(err => alert(err.message));
-        } else {
-            alert(error.message);
         }
-    });
-}
+    </style>
+</head>
+<body>
+    <div id="top_bar" style="display:none;">
+        <p class="text">focus‽ editor</p>
+        <div id="logged-in">
+            <a href="Content_web/content.html" target="_blank" class="text" id="content_link">Content</a>
+            <button id="logout_button" onclick="logout()">Logout</button>
+        </div>
+    </div>
 
-function logout() {
-    signOut(auth);
-}
+    <div id="login-form">
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="loginOrRegister()">Login</button>
+    </div>
 
-// Obsługa stanu zalogowania
-onAuthStateChanged(auth, user => {
-    const loginForm = document.getElementById("login-form");
-    const loggedIn = document.getElementById("logged-in");
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 
-    if(user){
-        loginForm.style.display = "none";
-        loggedIn.style.display = "flex";
-    } else {
-        loginForm.style.display = "flex";
-        loggedIn.style.display = "none";
-    }
-});
+        const firebaseConfig = {
+            apiKey: "AIzaSyCmCcBFglOUSDuJm25CVHlBuelU2S7fwno",
+            authDomain: "focus-editor.firebaseapp.com",
+            projectId: "focus-editor",
+            storageBucket: "focus-editor.firebasestorage.app",
+            messagingSenderId: "795548881675",
+            appId: "1:795548881675:web:0b95749a361e4a3f8b080e",
+            measurementId: "G-9GSX65PX21"
+        };
 
-// Globalnie dostępne funkcje dla onclick
-window.loginOrRegister = loginOrRegister;
-window.logout = logout;
-</script>
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
 
+        // Funkcja logowania i rejestracji
+        function loginOrRegister() {
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
 
+            if (!email || !password) { alert("Enter email and password!"); return; }
+            if (password.length < 6) { alert("Password must be at least 6 characters!"); return; }
 
-    </body>
-    </html>
+            signInWithEmailAndPassword(auth, email, password)
+            .then(() => {})
+            .catch(error => {
+                if(error.code === "auth/user-not-found") {
+                    createUserWithEmailAndPassword(auth, email, password)
+                    .then(() => alert("User registered and logged in"))
+                    .catch(err => alert(err.message));
+                } else {
+                    alert(error.message);
+                }
+            });
+        }
 
+        function logout() {
+            signOut(auth);
+        }
 
+        // Pokazywanie/ukrywanie topbaru w zależności od zalogowania
+        onAuthStateChanged(auth, user => {
+            const loginForm = document.getElementById("login-form");
+            const topBar = document.getElementById("top_bar");
 
+            if(user){
+                loginForm.style.display = "none";
+                topBar.style.display = "flex";
+            } else {
+                loginForm.style.display = "flex";
+                topBar.style.display = "none";
+            }
+        });
 
+        // Udostępnienie funkcji globalnie
+        window.loginOrRegister = loginOrRegister;
+        window.logout = logout;
+    </script>
+</body>
+</html>
